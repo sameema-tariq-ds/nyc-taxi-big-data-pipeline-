@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# user folders or files not to be uploaded on the github
+data/
+logs/
+user-to-do-list
+user-did
