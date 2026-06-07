@@ -1,5 +1,9 @@
 from logs_config import get_logger
 from src.ingest import Ingestor
+<<<<<<< HEAD
+=======
+from src.optimize import MemoryOptimizer
+>>>>>>> 859159b (feat(optimize): add DataFrame memory optimization pipeline)
 
 logger = get_logger(__name__)
 
@@ -8,8 +12,12 @@ if __name__ == "__main__":
     available_raw_files = ingestor.list_available_files()
     logger.info(f"Available files: {(available_raw_files)}")
 
-    # ingestor.read_file(2025, 1)
+    df = ingestor.read_file(2025, 1)
 
-    list(ingestor.read_all())
+    # list(ingestor.read_all())
 
-    list(ingestor.read_chunks(2025, 1))
+    # list(ingestor.read_chunks(2025, 1))
+
+    optimizer = MemoryOptimizer()
+    df_opt, report = optimizer.optimize(df)
+    logger.info(f"Memory Optimization Report:{report}")

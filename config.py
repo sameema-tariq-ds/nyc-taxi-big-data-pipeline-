@@ -83,11 +83,57 @@ class PipelineSettings:
     chunk_size: int = 100_00
 
 
+@dataclass
+class SchemaSettings:
+    """Column names, expected dtypes, and validation rules.
+
+    Centralising this means if NYC TLC renames a column next year,
+    you fix it in ONE place and the whole pipeline adapts.
+    """
+
+    # Target dtypes after memory optimisation.
+    # The default int64/float64 pandas uses wastes 2–4x the memory needed.
+    optimised_dtypes: dict[str, str] = field(
+        default_factory=lambda: {
+            "VendorID": "int8",  # max 2 ID
+            "RatecodeID": "Int8",  # max 6
+            "passenger_count": "Int8",  # max 6 passengers; int8 holds up to 127
+            "PULocationID": "int16",  # 265 zones; int16 holds up to 32767
+            "DOLocationID": "int16",
+            "payment_type": "Int8",  # 1–6 categories
+            "trip_distance": "float32",  # 4 decimal places is plenty
+            "fare_amount": "float32",
+            "tip_amount": "float32",
+            "total_amount": "float32",
+            "extra": "float32",
+            "mta_tax": "float32",
+            "tolls_amount": "float32",
+            "improvement_surcharge": "float32",
+            "congestion_surcharge": "float32",
+            "cbd_congestion_fee": "float32",
+            "trip_type": "Int8",
+        }
+    )
+
+    # Categorical columns (convert to category dtype — saves ~90% memory on strings)
+    categorical_columns: list[str] = field(
+        default_factory=lambda: [
+            "payment_type",
+        ]
+    )
+
+    # Datetime columns to parse
+    datetime_columns: list[str] = field(
+        default_factory=lambda: [
+            "tpep_pickup_datetime",
+            "tpep_dropoff_datetime",
+        ]
+    )
+
+
 # ---------------------------------------------------------------------------
 # Top-level config object — this is what every module imports
 # ---------------------------------------------------------------------------
-
-
 @dataclass
 class Config:
     """Master config. Import this everywhere: `from config import cfg`"""
@@ -95,6 +141,10 @@ class Config:
     paths: Paths = field(default_factory=Paths)
     dataset_config: DatasetConfig = field(default_factory=DatasetConfig)
     pipeline: PipelineSettings = field(default_factory=PipelineSettings)
+<<<<<<< HEAD
+=======
+    schema: SchemaSettings = field(default_factory=SchemaSettings)
+>>>>>>> 859159b (feat(optimize): add DataFrame memory optimization pipeline)
 
 
 # Module-level singleton — import this, not the class
