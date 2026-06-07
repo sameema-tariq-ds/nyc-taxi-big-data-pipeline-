@@ -1,9 +1,6 @@
 from logs_config import get_logger
 from src.ingest import Ingestor
-<<<<<<< HEAD
-=======
 from src.optimize import MemoryOptimizer
->>>>>>> 859159b (feat(optimize): add DataFrame memory optimization pipeline)
 
 logger = get_logger(__name__)
 
