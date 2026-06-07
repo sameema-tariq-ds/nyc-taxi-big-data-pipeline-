@@ -24,6 +24,7 @@ ROOT_DIR: Path = Path(__file__).resolve().parent
 # Load .env file if it exists (won't error if missing — safe for CI/CD)
 load_dotenv(ROOT_DIR / ".env")
 
+
 # ---------------------------------------------------------------------------
 # Directory layout
 # ---------------------------------------------------------------------------
@@ -47,12 +48,13 @@ class Paths:
             path: Path = getattr(self, path_field)
             path.mkdir(parents=True, exist_ok=True)
 
+
 # ---------------------------------------------------------------------------
 # Dataset Config
 # ---------------------------------------------------------------------------
 @dataclass
 class DatasetConfig:
-    """"Configuration for selecting and naming NYC taxi parquet datasets."""
+    """ "Configuration for selecting and naming NYC taxi parquet datasets."""
 
     # Which taxi type to use: "yellow", "green", or "fhv"
     taxi_type: str = "green"
@@ -64,9 +66,9 @@ class DatasetConfig:
     # Months to include. None = all 12.
     months: list[int] = field(default_factory=lambda: list(range(1, 13)))
 
-    def parquet_filename(self, year:int, month: int) -> str:
+    def parquet_filename(self, year: int, month: int) -> str:
         return f"{self.taxi_type}_tripdata_{year}-{month:02d}.parquet"
-    
+
 
 # ---------------------------------------------------------------------------
 # Pipeline performance settings
@@ -74,11 +76,13 @@ class DatasetConfig:
 @dataclass
 class PipelineSettings:
     """Tuning knobs for memory and compute performance."""
- 
+
     # Rows per chunk when reading with pandas.
     # At ~500 bytes/row for yellow taxi, 100k rows ≈ 50MB per chunk.
     # Increase if you have >16GB RAM, decrease if you hit MemoryError.
     chunk_size: int = 100_00
+
+
 # ---------------------------------------------------------------------------
 # Top-level config object — this is what every module imports
 # ---------------------------------------------------------------------------
@@ -91,8 +95,6 @@ class Config:
     paths: Paths = field(default_factory=Paths)
     dataset_config: DatasetConfig = field(default_factory=DatasetConfig)
     pipeline: PipelineSettings = field(default_factory=PipelineSettings)
-
-
 
 
 # Module-level singleton — import this, not the class
