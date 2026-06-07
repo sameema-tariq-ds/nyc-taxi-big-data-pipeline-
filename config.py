@@ -141,10 +141,7 @@ class Config:
     paths: Paths = field(default_factory=Paths)
     dataset_config: DatasetConfig = field(default_factory=DatasetConfig)
     pipeline: PipelineSettings = field(default_factory=PipelineSettings)
-<<<<<<< HEAD
-=======
     schema: SchemaSettings = field(default_factory=SchemaSettings)
->>>>>>> 859159b (feat(optimize): add DataFrame memory optimization pipeline)
 
 
 # Module-level singleton — import this, not the class
