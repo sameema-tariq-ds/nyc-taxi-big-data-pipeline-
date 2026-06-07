@@ -43,7 +43,6 @@ def get_logger(name: str) -> logging.Logger:
     error_handler.setLevel(logging.ERROR)
     logger.addHandler(error_handler)
 
-
     # console logging
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
