@@ -141,7 +141,8 @@ class Ingestor:
             df = batch.to_pandas()
             chunk_num += 1
             logger.info(
-                f"Loaded {path.name}-chunk{chunk_num}: {len(df):,} rows x {len(df.columns)}"
+                f"Loaded {path.name}-chunk{chunk_num}: {len(df):,} rows x "
+                f"{len(df.columns)}"
             )
             yield df
 
