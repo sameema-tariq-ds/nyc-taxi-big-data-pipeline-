@@ -73,12 +73,12 @@ class SchemaValidator:
 
 class Ingestor:
     """Reads raw parquet files into pandas DataFrames.
-    
+
     Two reading modes:
       - read_file(): single month, returns one DataFrame
       - read_chunks(): single month, yields chunk-by-chunk (memory-safe)
       - read_all(): all months, yields one DataFrame per file
-    
+
     All modes only load the columns defined in cfg.schema.columns_to_keep.
     """
 
@@ -87,7 +87,7 @@ class Ingestor:
 
     def read_file(self, year: int, month: int) -> pd.DataFrame | None:
         """Read a single monthly parquet file into a DataFrame.
-        
+
         Uses pyarrow engine which supports:
           - Predicate pushdown (skip unneeded row groups)
           - Column pruning (only read columns we need)
@@ -116,7 +116,7 @@ class Ingestor:
 
     def read_chunks(self, year: int, month: int) -> Iterator[pd.DataFrame]:
         """Read a single file in chunks. Use when RAM is limited.
-        
+
         Each chunk is a complete, valid DataFrame — safe to process independently.
         The chunk_size is set in cfg.pipeline.chunk_size.
         """
@@ -140,15 +140,17 @@ class Ingestor:
         for batch in pf.iter_batches(batch_size=chunk_size, columns=columns):
             df = batch.to_pandas()
             chunk_num += 1
-            logger.info(f"Loaded {path.name}-chunk{chunk_num}: {len(df):,} rows x {len(df.columns)}")
+            logger.info(
+                f"Loaded {path.name}-chunk{chunk_num}: {len(df):,} rows x {len(df.columns)}"
+            )
             yield df
 
     def read_all(self) -> Iterator[pd.DataFrame]:
         """Iterate over all configured year/month files.
-        
+
         Yields one DataFrame per file. The caller decides whether to
         concatenate them or process them one by one.
-        
+
         Senior pattern: yield instead of returning a giant concatenated
         DataFrame — lets the caller control memory usage.
         """
