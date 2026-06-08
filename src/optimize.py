@@ -87,6 +87,7 @@ class MemoryOptimizer:
         df_before = df.copy()
         df_after = df.copy()
 
+        df_after = self.drop_unused_columns(df_after)
         df_after = self.drop_null_columns(df_after)
         df_after = self.parse_datetimes(df_after)
         df_after = self.downcast_int_floats(df_after)
@@ -94,6 +95,14 @@ class MemoryOptimizer:
 
         report = memory_report(df_before, df_after)
         return df_after, report
+
+    def drop_unused_columns(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Drop only the columns defined in config. Keep everything else."""
+        dropped_cols = [c for c in cfg.schema.columns_to_drop if c in df.columns]
+        if dropped_cols:
+            logger.info(f"Dropping unused columns: {dropped_cols}")
+        keep_cols = list(set(df.columns) - set(dropped_cols))
+        return df[keep_cols]
 
     def drop_null_columns(self, df: pd.DataFrame) -> pd.DataFrame:
         """Remove columns that contain only null values.

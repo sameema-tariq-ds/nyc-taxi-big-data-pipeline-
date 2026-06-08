@@ -91,11 +91,20 @@ class SchemaSettings:
     you fix it in ONE place and the whole pipeline adapts.
     """
 
+    # Columns we actually need (dropping the rest saves memory immediately)
+    columns_to_drop: list[str] = field(
+        default_factory=lambda: [
+            "VendorID",
+            "store_and_fwd_flag",
+            "trip_type",
+            "ehail_fee",
+        ]
+    )
+
     # Target dtypes after memory optimisation.
     # The default int64/float64 pandas uses wastes 2–4x the memory needed.
     optimised_dtypes: dict[str, str] = field(
         default_factory=lambda: {
-            "VendorID": "int8",  # max 2 ID
             "RatecodeID": "Int8",  # max 6
             "passenger_count": "Int8",  # max 6 passengers; int8 holds up to 127
             "PULocationID": "int16",  # 265 zones; int16 holds up to 32767
@@ -111,7 +120,6 @@ class SchemaSettings:
             "improvement_surcharge": "float32",
             "congestion_surcharge": "float32",
             "cbd_congestion_fee": "float32",
-            "trip_type": "Int8",
         }
     )
 
