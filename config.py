@@ -139,6 +139,32 @@ class SchemaSettings:
     )
 
 
+@dataclass
+class TransformConfig:
+    """Configuration for feature engineering and data-quality validation."""
+
+    fare_columns: list[str] = field(
+        default_factory=lambda: [
+            "fare_amount",
+            "extra",
+            "mta_tax",
+            "tip_amount",
+            "tolls_amount",
+            "improvement_surcharge",
+            "congestion_surcharge",
+            "cbd_congestion_fee",
+        ]
+    )
+
+    valid_zone_ids: set[int] = field(
+        default_factory=lambda: set(range(1, 264))  # TLC zones 1-263
+    )
+
+    valid_rate_codes: set[int] = field(default_factory=lambda: {1, 2, 3, 4, 5, 6})
+
+    valid_payment_types: set[int] = field(default_factory=lambda: {1, 2, 3, 4, 5, 6})
+
+
 # ---------------------------------------------------------------------------
 # Top-level config object — this is what every module imports
 # ---------------------------------------------------------------------------
@@ -150,6 +176,7 @@ class Config:
     dataset_config: DatasetConfig = field(default_factory=DatasetConfig)
     pipeline: PipelineSettings = field(default_factory=PipelineSettings)
     schema: SchemaSettings = field(default_factory=SchemaSettings)
+    transform_config: TransformConfig = field(default_factory=TransformConfig)
 
 
 # Module-level singleton — import this, not the class
