@@ -9,9 +9,22 @@ All transformations are:
   - Null-safe (won't crash on NaN values)
   - Idempotent (safe to re-run on already-transformed data)
 
-Features added:
-  - trip_duration_sec     : pickup → dropoff in seconds
+Responsibilities:
+    - Generate temporal features from pickup timestamps
+    - Calculate fare-based metrics and anomaly indicators
+    - Derive trip efficiency features such as duration and average speed
+    - Validate location, passenger, rate code, and payment information
+    - Create data quality flags for downstream aggregation and anomaly detection
 
+Features Added:
+    - trip_duration_min
+    - pickup_hour, pickup_dayofweek, pickup_month, pickup_year
+    - expected_fare, fare_discrepancy
+    - avg_speed_mph
+    - is_invalid_PULocation, is_invalid_DOLocation, is_same_zone
+    - is_zero_passenger
+    - is_invalid_ratecodeID
+    - is_invalid_payment, is_cash_with_tip, is_free_but_charged
 
 Usage:
     from transform import Transformer
