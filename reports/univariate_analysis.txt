@@ -1,0 +1,29 @@
+What the Graphs Are Telling???
+
+trip_distance — Most Critical Issue
+The x-axis goes up to 80,000 miles. That is physically impossible for a NYC taxi trip. Normal trips should be under 50 miles. This is your strongest anomaly signal and needs immediate attention.
+
+avg_speed_mph — Directly Related
+X-axis reaches 1.75 million mph. This is a consequence of the impossible distances above. These two columns are linked — same bad rows driving both.
+
+trip_duration_mins — Extreme Outliers
+Most trips cluster near 0–60 mins which is normal, but the tail stretches to 1,400 minutes (~23 hours). Likely GPS left running or data entry errors.
+
+fare_amount & total_amount — Negative Values
+Both distributions show values going to -100. Negative fares are clear billing anomalies — refunds, disputes, or data errors.
+
+fare_discrepancy — Bimodal Shape
+There's a large spike near 0 (good — most fares add up correctly) but a second bump around 10–20 and a long tail to 250. Those non-zero discrepancies are direct fraud/billing anomaly candidates.
+
+tip_amount — Long Tail
+Most tips are 0–20 which is normal, but outliers reach $250. Combined with is_cash_with_tip flag this is suspicious.
+
+passenger_count — Mostly Fine
+Peaks at 1–2 which is expected. Values of 7–9 are outliers worth flagging but not alarming.
+
+
+1. trip_distance + avg_speed_mph  →  impossible values (top priority)
+2. fare_amount + total_amount     →  negative values
+3. fare_discrepancy               →  non-zero discrepancies
+4. trip_duration_mins             →  extreme durations
+5. tip_amount                     →  extreme tips

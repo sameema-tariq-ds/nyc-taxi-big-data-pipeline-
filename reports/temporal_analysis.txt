@@ -1,0 +1,11 @@
+Temporal Analysis — What It's Telling ??
+
+Trip Count by Hour — Perfectly normal pattern
+
+Dead hours at 3–5am (expected)
+Gradual morning build from 7am
+Evening peak at 5–6pm (rush hour) 
+This is textbook NYC taxi demand — no anomalies here
+
+Avg Fare by Day — Suspiciously flat
+All days show ~$16–17 average with almost no variation. Saturday is very slightly higher which makes sense. But this flatness tells you the extreme outliers are inflating all days equally — once you clean the impossible trips, you'll likely see more natural variation.
