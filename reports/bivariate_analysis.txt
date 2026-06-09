@@ -1,0 +1,13 @@
+Bivariate Analysis — What It's Telling ??
+
+Distance vs Fare — Extreme outliers dominating the scale
+Almost all data is squeezed into a vertical line near x=0. The handful of 80,000-mile trips are stretching the entire x-axis making the normal data invisible. The linear relationship we expect simply cannot be seen because of these extreme outliers.
+
+Duration vs Distance — Same problem
+All normal trips are collapsed at the bottom-left corner. One point sits at x=1,400 mins with near-zero distance — a taxi running for 23 hours going nowhere. Classic GPS/meter left on anomaly.
+
+Fare vs Discrepancy — Actually useful signal here
+This is the healthiest of the three plots. You can see:
+    1. Most trips cluster at $0–100 fare with near-zero discrepancy 
+    2. A dense cluster around $10–50 with discrepancy up to $20 — worth investigating
+    3. Isolated points at $300+ fare with high discrepancy — strong fraud candidates

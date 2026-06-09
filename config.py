@@ -35,8 +35,11 @@ class Paths:
     # Input
     raw_dir: Path = ROOT_DIR / "data" / "raw"  # downloaded .parquet files go here
 
-    # Outputs
+    # Log Outputs
     logs_dir: Path = ROOT_DIR / "logs"  # pipeline run logs
+
+    # Save figures generated through EDA
+    reports_dir: Path = ROOT_DIR / "reports"
 
     def __post_init__(self) -> None:
         """Auto-create every directory when config is imported.
@@ -165,6 +168,34 @@ class TransformConfig:
     valid_payment_types: set[int] = field(default_factory=lambda: {1, 2, 3, 4, 5, 6})
 
 
+@dataclass
+class EdaConfig:
+    numeric_cols: list[str] = field(
+        default_factory=lambda: [
+            "trip_duration_min",
+            "trip_distance",
+            "avg_speed_mph",
+            "fare_amount",
+            "total_amount",
+            "fare_discrepancy",
+            "tip_amount",
+            "passenger_count",
+        ]
+    )
+
+    days_names: dict[int, str] = field(
+        default_factory=lambda: {
+            0: "Monday",
+            1: "Tuesday",
+            2: "Wednesday",
+            3: "Thursday",
+            4: "Friday",
+            5: "Saturday",
+            6: "Sunday",
+        }
+    )
+
+
 # ---------------------------------------------------------------------------
 # Top-level config object — this is what every module imports
 # ---------------------------------------------------------------------------
@@ -177,6 +208,7 @@ class Config:
     pipeline: PipelineSettings = field(default_factory=PipelineSettings)
     schema: SchemaSettings = field(default_factory=SchemaSettings)
     transform_config: TransformConfig = field(default_factory=TransformConfig)
+    eda_config: EdaConfig = field(default_factory=EdaConfig)
 
 
 # Module-level singleton — import this, not the class

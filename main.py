@@ -1,4 +1,5 @@
 from logs_config import get_logger
+from src.eda_analysis import EDA
 from src.ingest import Ingestor
 from src.optimize import MemoryOptimizer
 from src.transform import Transformer
@@ -49,3 +50,6 @@ if __name__ == "__main__":
     for col in flag_cols:
         unique_vals = df_transformed[col].unique()
         print(f"{col}: {unique_vals}")
+
+    eda = EDA()
+    eda.display_eda_analysis(df_transformed)
